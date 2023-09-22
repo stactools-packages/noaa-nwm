@@ -2,22 +2,22 @@ import logging
 
 import click
 from click import Command, Group
-from stactools.ephemeral import stac
+from stactools.noaa_nwm import stac
 
 logger = logging.getLogger(__name__)
 
 
-def create_ephemeralcmd_command(cli: Group) -> Command:
-    """Creates the stactools-ephemeral command line utility."""
+def create_noaanwm_command(cli: Group) -> Command:
+    """Creates the stactools-noaa-nwm command line utility."""
 
     @cli.group(
-        "ephemeralcmd",
-        short_help=("Commands for working with stactools-ephemeral"),
+        "noaanwm",
+        short_help=("Commands for working with stactools-noaa-nwm"),
     )
-    def ephemeralcmd() -> None:
+    def noaanwm() -> None:
         pass
 
-    @ephemeralcmd.command(
+    @noaanwm.command(
         "create-collection",
         short_help="Creates a STAC collection",
     )
@@ -32,7 +32,7 @@ def create_ephemeralcmd_command(cli: Group) -> Command:
         collection.set_self_href(destination)
         collection.save_object()
 
-    @ephemeralcmd.command("create-item", short_help="Create a STAC item")
+    @noaanwm.command("create-item", short_help="Create a STAC item")
     @click.argument("source")
     @click.argument("destination")
     def create_item_command(source: str, destination: str) -> None:
@@ -45,4 +45,4 @@ def create_ephemeralcmd_command(cli: Group) -> Command:
         item = stac.create_item(source)
         item.save_object(dest_href=destination)
 
-    return ephemeralcmd
+    return noaanwm

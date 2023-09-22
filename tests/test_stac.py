@@ -1,4 +1,4 @@
-from stactools.ephemeral import stac
+from stactools.noaa_nwm import stac
 
 from . import test_data
 
