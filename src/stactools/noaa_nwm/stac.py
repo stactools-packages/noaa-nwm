@@ -157,5 +157,5 @@ def create_item(
     return item
 
 
-def create_collection() -> pystac.Collection:
-    return pystac.Collection()
+def create_collection():  # type: ignore
+    ...

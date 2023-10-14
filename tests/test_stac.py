@@ -7,7 +7,7 @@ def test_create_collection() -> None:
     # This function should be updated to exercise the attributes of interest on
     # the collection
 
-    collection = stac.create_collection()
+    collection = stac.create_collection()  # type: ignore
     collection.set_self_href(None)  # required for validation to pass
     assert collection.id == "example-collection"
     assert collection.extra_fields["custom_attribute"] == "foo"
