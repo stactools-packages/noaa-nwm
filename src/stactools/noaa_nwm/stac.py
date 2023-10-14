@@ -54,7 +54,7 @@ class NWMInfo:
     )
 
     @classmethod
-    def from_filename(cls, s: str):
+    def from_filename(cls, s: str) -> "NWMInfo":
         m = cls.pattern.match(s)
         assert m
         d = m.groupdict()
@@ -75,13 +75,13 @@ class NWMInfo:
             product=product,
         )
 
-    @property
-    def filename(self):
-        # reconstruct it
-        ...
+    # @property
+    # def filename(self) -> str:
+    #     # reconstruct it
+    #     ...
 
     @property
-    def id(self):
+    def id(self) -> str:
         return "-".join(
             [
                 self.date.strftime("%Y%m%d"),
@@ -94,12 +94,12 @@ class NWMInfo:
         )
 
     @property
-    def datetime(self):
+    def datetime(self) -> datetime.datetime:
         # TODO: confirm this is correct
         return self.date + datetime.timedelta(hours=self.forecast_hour)
 
     @property
-    def extra_properties(self):
+    def extra_properties(self) -> dict[str, str | int]:
         # TODO: use the forecast extension
         return {
             "nwm:category": self.category.value,
@@ -111,9 +111,9 @@ class NWMInfo:
 
 def create_item(
     href: str,
-    read_href_modifier=None,
+    read_href_modifier: typing.Callable[[str], str] | None = None,
     kerchunk_indices: dict[str, typing.Any] | None = None,
-):
+) -> pystac.Item:
     path = "/".join(href.rsplit("/", 3)[-3:])
     info = NWMInfo.from_filename(path)
 
@@ -151,10 +151,11 @@ def create_item(
         **additional_dimensions,
     )
 
+    assert isinstance(item, pystac.Item)
     item.assets["data"] = pystac.Asset(href=href, media_type="application/x-netcdf")
 
     return item
 
 
-def create_collection():
-    ...
+def create_collection() -> pystac.Collection:
+    return pystac.Collection()
