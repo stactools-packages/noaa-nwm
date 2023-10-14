@@ -1,10 +1,11 @@
-import pystac
-import re
-import typing
 import dataclasses
 import datetime
 import enum
+import re
+import typing
+
 import fsspec
+import pystac
 import xarray as xr
 import xstac
 

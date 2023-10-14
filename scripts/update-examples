@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import json
-from pathlib import Path
-from stactools.noaa_nwm import stac
+
 import kerchunk.hdf
+from stactools.noaa_nwm import stac
 
 href = "https://noaanwm.blob.core.windows.net/nwm/nwm.20231010/short_range/nwm.t00z.short_range.channel_rt.f001.conus.nc"
 indices = kerchunk.hdf.SingleHdf5ToZarr(href).translate()
@@ -10,7 +10,6 @@ item = stac.create_item(href, kerchunk_indices=indices)
 
 with open("examples/example-item/example-item.json", "w") as f:
     json.dump(item.to_dict(), f, indent=2)
-
 
 
 # import shutil
