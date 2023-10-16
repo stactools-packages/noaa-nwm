@@ -1,16 +1,16 @@
-#from pathlib import Path
+# from pathlib import Path
 
-#from click import Group
-#from click.testing import CliRunner
-#from pystac import Collection, Item
-#from stactools.noaa_nwm.commands import create_noaanwm_command
+# from click import Group
+# from click.testing import CliRunner
+# from pystac import Collection, Item
+# from stactools.noaa_nwm.commands import create_noaanwm_command
 
-#from . import test_data
+# from . import test_data
 
-#command = create_noaanwm_command(Group())
+# command = create_noaanwm_command(Group())
 
 
-#def test_create_collection(tmp_path: Path) -> None:
+# def test_create_collection(tmp_path: Path) -> None:
 #    # Smoke test for the command line create-collection command
 #    #
 #    # Most checks should be done in test_stac.py::test_create_collection
@@ -23,7 +23,7 @@
 #    collection.validate()
 
 
-#def test_create_item(tmp_path: Path) -> None:
+# def test_create_item(tmp_path: Path) -> None:
 #    # Smoke test for the command line create-item command
 #    #
 #    # Most checks should be done in test_stac.py::test_create_item
