@@ -10,18 +10,18 @@ import xarray as xr
 import xstac
 
 
-class Product(str, enum.Enum):
+class FileOutputType(str, enum.Enum):
     CHANNEL_RT = "channel_rt"
     LAND = "land"
     RESERVOIR = "reservoir"
     TERRAIN_RT = "terrain_rt"
 
 
-class Region(str, enum.Enum):
+class ModelDomain(str, enum.Enum):
     CONUS = "conus"
 
 
-class Category(str, enum.Enum):
+class ModelConfiguration(str, enum.Enum):
     SHORT_RANGE = "short_range"
 
 
@@ -37,20 +37,20 @@ class NWMInfo:
     """
 
     date: datetime.datetime
-    category: Category  # literal / enum
+    model_configuration: ModelConfiguration  # literal / enum
     cycle_runtime: int  # literal / enum
-    product: Product
+    file_output_type: FileOutputType
     forecast_hour: int
-    region: Region
+    model_domain: ModelDomain
 
     pattern = re.compile(
         "nwm\.(?P<date>\d{8})/"
-        "(?P<category>short_range)"
+        "(?P<model_configuration>short_range)"
         "/nwm\.t(?P<cycle_runtime>"
         "\d{2})z\.short_range\."
-        "(?P<product>(channel_rt|land|reservoir|terrain_rt))\."
+        "(?P<file_output_type>(channel_rt|land|reservoir|terrain_rt))\."
         "f(?P<forecast_hour>\d{3})\."
-        "(?P<region>conus)\.nc"
+        "(?P<model_domain>conus)\.nc"
     )
 
     @classmethod
@@ -60,19 +60,19 @@ class NWMInfo:
         d = m.groupdict()
 
         date = datetime.datetime.strptime(d["date"], "%Y%m%d")
-        category = Category(d["category"])
+        model_configuration = ModelConfiguration(d["model_configuration"])
         cycle_runtime = int(d["cycle_runtime"])
         forecast_hour = int(d["forecast_hour"])
-        region = Region(d["region"])
-        product = Product(d["product"])
+        model_domain = ModelDomain(d["model_domain"])
+        file_output_type = FileOutputType(d["file_output_type"])
 
         return cls(
             date=date,
-            category=category,
+            model_configuration=model_configuration,
             cycle_runtime=cycle_runtime,
             forecast_hour=forecast_hour,
-            region=region,
-            product=product,
+            model_domain=model_domain,
+            file_output_type=file_output_type,
         )
 
     # @property
@@ -85,9 +85,9 @@ class NWMInfo:
         return "-".join(
             [
                 self.date.strftime("%Y%m%d"),
-                self.category,
-                self.region,
-                self.product,
+                self.model_configuration,
+                self.model_domain,
+                self.file_output_type,
                 str(self.cycle_runtime),
                 str(self.forecast_hour),
             ]
@@ -102,9 +102,9 @@ class NWMInfo:
     def extra_properties(self) -> dict[str, str | int]:
         # TODO: use the forecast extension
         return {
-            "nwm:category": self.category.value,
-            "nwm:region": self.region.value,
-            "nwm:product": self.product.value,
+            "nwm:model_configuration": self.model_configuration.value,
+            "nwm:model_domain": self.model_domain.value,
+            "nwm:file_output_type": self.file_output_type.value,
             "nwm:forecast_hour": self.forecast_hour,
         }
 
@@ -120,7 +120,7 @@ def create_item(
     ds = xr.open_dataset(fsspec.open(href).open())
     ds = xstac.fix_attrs(ds)
 
-    # TODO: geometry from the region (conus, ...)
+    # TODO: geometry from the model_domain (conus, ...)
     template = pystac.Item(
         info.id,
         geometry=None,
