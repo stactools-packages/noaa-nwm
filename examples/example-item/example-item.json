@@ -3,9 +3,9 @@
   "stac_version": "1.0.0",
   "id": "20231010-short_range-conus-channel_rt-0-1",
   "properties": {
-    "nwm:category": "short_range",
-    "nwm:region": "conus",
-    "nwm:product": "channel_rt",
+    "nwm:model_configuration": "short_range",
+    "nwm:model_domain": "conus",
+    "nwm:file_output_type": "channel_rt",
     "nwm:forecast_hour": 1,
     "cube:dimensions": {
       "time": {
