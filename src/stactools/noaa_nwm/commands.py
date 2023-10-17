@@ -28,7 +28,7 @@ def create_noaanwm_command(cli: Group) -> Command:
         Args:
             destination: An HREF for the Collection JSON
         """
-        collection = stac.create_collection()
+        collection = stac.create_collection()  # type: ignore
         collection.set_self_href(destination)
         collection.save_object()
 

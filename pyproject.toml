@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
 requires-python = ">=3.8"
-dependencies = ["stactools>=0.4.0"]
+dependencies = ["stactools>=0.4.0", "xstac>=1.2.0", "fsspec[http]"]
 
 [project.optional-dependencies]
 dev = [
